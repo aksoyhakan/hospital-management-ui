@@ -5,6 +5,8 @@ import Input from "../components/atoms/Input";
 import Button from "../components/atoms/Button";
 import styled from "styled-components";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../store/authSlice";
 
 const LoginContainer = styled.div`
   padding: 20px;
@@ -18,12 +20,20 @@ const Login: React.FC = () => {
   const [errorMesagge, setErrorMessage] = useState("");
   const router = useRouter();
   const [login, { isLoading, error }] = useLoginMutation();
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     try {
       const response = await login({ email, password }).unwrap();
       Object.entries(response).map(([key, value]) =>
         localStorage.setItem(key, value)
+      );
+      dispatch(
+        setCredentials({
+          token: response.token,
+          name: response.name,
+          id: response.id,
+        })
       );
       toast.success(`${response.name} başarılı bir şekilde girdiniz`, {
         autoClose: 3000,

@@ -6,6 +6,8 @@ import PatientInput from "@/components/atoms/Patient-Input";
 import PatientLabel from "@/components/atoms/Patient-Label";
 import Form from "@/components/molecules/Form";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -56,6 +58,7 @@ const PatientForm: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"patient" | "prescription">(
     "patient"
   );
+  const doctorId = useSelector((state: RootState) => state.auth.id);
 
   const [updatePatientData, setUpdatePatientData] = useState({
     id: null,
@@ -73,7 +76,7 @@ const PatientForm: React.FC = () => {
     medicineDose: "",
     instruction: "",
     description: "",
-    userId: 1,
+    userId: doctorId,
   });
 
   const handleSubmit = async () => {
