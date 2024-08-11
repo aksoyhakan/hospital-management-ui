@@ -61,6 +61,13 @@ const PatientList: React.FC = () => {
     router.push(`/doctor-monitor/${id}`);
   };
 
+  const navigateToPrescription = (id: number) => {
+    router.push({
+      pathname: `/doctor-monitor/${id}`,
+      query: { module: "prescription" },
+    });
+  };
+
   const handleClickPrescriptionDetail = (id: number) => {
     setSelectedModalId(id);
     setOpenModal(true);
@@ -74,6 +81,7 @@ const PatientList: React.FC = () => {
             <TableHeader>Ad</TableHeader>
             <TableHeader>Doğum Tarihi</TableHeader>
             <TableHeader>İletişim Bilgileri</TableHeader>
+            <TableHeader>Sorumlu Doktor</TableHeader>
             <TableHeader>İşlemler</TableHeader>
           </tr>
         </thead>
@@ -87,6 +95,7 @@ const PatientList: React.FC = () => {
                 {new Date(patient.birthDate).toLocaleDateString("tr-TR")}
               </TableData>
               <TableData>{patient.contactInfo}</TableData>
+              <TableData>{patient.doctorName}</TableData>
               <TableData>
                 <ButtonContainer>
                   <PatientButton
@@ -115,12 +124,7 @@ const PatientList: React.FC = () => {
         <p>Talimatı: {patient?.instruction}</p>
         <p>Açıklama: {patient?.description}</p>
         <ButtonModalContainer>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              router.push(`/doctor-monitor/${patient?.id}`);
-            }}
-          >
+          <Button onClick={() => navigateToPrescription(patient?.id)}>
             Reçeteyi Düzenle
           </Button>
           <Button

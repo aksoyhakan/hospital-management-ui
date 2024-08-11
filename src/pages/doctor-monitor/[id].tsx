@@ -59,15 +59,16 @@ const ContentContainer = styled.div`
 
 const PatientDetail: React.FC = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, module } = router.query as { id?: string; module?: string };
 
   const { data: patient, isLoading } = useGetPatientByIdQuery(id as string);
 
   const [updatePatient] = useUpdatePatientMutation();
 
-  const [activeTab, setActiveTab] = useState<"patient" | "prescription">(
-    "patient"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "patient" | "prescription" | undefined | string
+  >(module ?? "patient");
+
   const doctorId = useSelector((state: RootState) => state.auth.id);
 
   const [updatePatientData, setUpdatePatientData] = useState({
